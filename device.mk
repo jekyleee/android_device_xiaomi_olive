@@ -147,7 +147,7 @@ PRODUCT_PACKAGES += \
     vndk_package
 
 # System properties
--include $(LOCAL_PATH)/system_prop.mk
+-include $(LOCAL_PATH)/vendor_prop.mk
 
 # Ramdisk
 PRODUCT_PACKAGES += \

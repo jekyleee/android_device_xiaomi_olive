@@ -147,6 +147,9 @@ BOARD_USES_QCOM_HARDWARE := true
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/twrp.qcom
 TARGET_USERIMAGES_USE_EXT4 := true
 
+# Props
+TARGET_SYSTEM_PROP += device/xiaomi/olive/system.prop
+
 # Verity
 BOARD_AVB_ENABLE := false
 BOARD_BUILD_DISABLED_VBMETA_IMAGE := true
