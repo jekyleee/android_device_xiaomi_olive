@@ -176,6 +176,9 @@ BOARD_USES_QCOM_HARDWARE := true
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/twrp.qcom
 TARGET_USERIMAGES_USE_EXT4 := true
 
+# Power
+TARGET_TAP_TO_WAKE_NODE := "/dev/input/event3"
+
 # Props
 TARGET_SYSTEM_PROP += device/xiaomi/olive/system.prop
 
