@@ -96,6 +96,10 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 # Drm
 TARGET_ENABLE_MEDIADRM_64 := true
 
+# FM
+BOARD_HAVE_QCOM_FM := true
+TARGET_QCOM_NO_FM_FIRMWARE := true
+
 # HIDL
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := device/xiaomi/olive/configs/vendor_framework_compatibility_matrix.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE := device/xiaomi/olive/configs/framework_manifest.xml
