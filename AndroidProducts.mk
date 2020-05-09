@@ -15,4 +15,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_pine.mk
+    $(LOCAL_DIR)/lineage_olive.mk
+
+COMMON_LUNCH_CHOICES := \
+    lineage_olive-eng \
+    lineage_olive-user \
+    lineage_olive-userdebug

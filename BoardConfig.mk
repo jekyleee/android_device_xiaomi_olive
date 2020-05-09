@@ -15,9 +15,9 @@
 #
 
 # Architecture
-TARGET_ARCH := arm
+TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
-TARGET_CPU_ABI := armeabi
+TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_VARIANT := cortex-a53
 TARGET_USES_64_BIT_BINDER := true
 
@@ -58,12 +58,12 @@ BOARD_KERNEL_IMAGE_NAME := zImage-dtb
 TARGET_KERNEL_VERSION := 4.9
 TARGET_KERNEL_ARCH := arm
 TARGET_KERNEL_HEADER_ARCH := arm
-TARGET_KERNEL_SOURCE := kernel/xiaomi/pine
-TARGET_KERNEL_CONFIG := pine-perf_defconfig
+TARGET_KERNEL_SOURCE := kernel/xiaomi/olive
+TARGET_KERNEL_CONFIG := olive-perf_defconfig
 #TARGET_KERNEL_CLANG_COMPILE := true
 
 # OTA
-TARGET_OTA_ASSERT_DEVICE := pine
+TARGET_OTA_ASSERT_DEVICE := olive
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
@@ -94,4 +94,4 @@ BOARD_BUILD_DISABLED_VBMETA_IMAGE := true
 BOARD_VNDK_VERSION := current
 
 # Inherit proprietary version
--include vendor/xiaomi/pine/BoardConfigVendor.mk
+-include vendor/xiaomi/olive/BoardConfigVendor.mk
