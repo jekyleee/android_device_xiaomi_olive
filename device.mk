@@ -189,5 +189,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/xiaomi/olive/configs/securelock.xml:system/etc/permissions/securelock.xml
 
+# VNDK
+PRODUCT_PACKAGES += \
+    vndk_package \
+    vndk-sp
+
 # Call proprietary blob setup
 $(call inherit-product-if-exists, vendor/xiaomi/olive/olive-vendor.mk)
