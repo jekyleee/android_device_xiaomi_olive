@@ -26,6 +26,12 @@ TARGET_NO_BOOTLOADER := true
 TARGET_BOOTLOADER_BOARD_NAME := MSM8937
 TARGET_BOARD_PLATFORM := msm8937
 
+# HIDL
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := device/xiaomi/olive/configs/vendor_framework_compatibility_matrix.xml
+DEVICE_FRAMEWORK_MANIFEST_FILE := device/xiaomi/olive/configs/framework_manifest.xml
+DEVICE_MANIFEST_FILE := device/xiaomi/olive/configs/manifest.xml
+DEVICE_MATRIX_FILE   := device/xiaomi/olive/configs/compatibility_matrix.xml
+
 # Dex-preopt
 ifeq ($(HOST_OS),linux)
   ifneq ($(TARGET_BUILD_VARIANT),eng)

@@ -29,6 +29,14 @@ PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay
 
+# Low power Whitelist
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/qti_whitelist.xml:system/etc/sysconfig/qti_whitelist.xml
+
+# QTI
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/privapp-permissions-qti.xml
+
 # Bluetooth
 PRODUCT_PACKAGES += \
     audio.a2dp.default
@@ -86,6 +94,10 @@ PRODUCT_PACKAGES += \
     init.target.rc \
     fstab.qcom \
     ueventd.qcom.rc
+
+#Securelock
+PRODUCT_COPY_FILES += \
+    device/xiaomi/olive/configs/securelock.xml:system/etc/permissions/securelock.xml
 
 # Call proprietary blob setup
 $(call inherit-product-if-exists, vendor/xiaomi/olive/olive-vendor.mk)
