@@ -182,6 +182,9 @@ TARGET_TAP_TO_WAKE_NODE := "/dev/input/event3"
 # Props
 TARGET_SYSTEM_PROP += device/xiaomi/olive/system.prop
 
+# Release Tools
+TARGET_RELEASETOOLS_EXTENSIONS := device/xiaomi/olive
+
 # Verity
 BOARD_AVB_ENABLE := false
 BOARD_BUILD_DISABLED_VBMETA_IMAGE := true
