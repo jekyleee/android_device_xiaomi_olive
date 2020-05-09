@@ -186,8 +186,9 @@ TARGET_SYSTEM_PROP += device/xiaomi/olive/system.prop
 TARGET_RELEASETOOLS_EXTENSIONS := device/xiaomi/olive
 
 # Verity
-BOARD_AVB_ENABLE := false
-BOARD_BUILD_DISABLED_VBMETA_IMAGE := true
+BOARD_AVB_ENABLE := true
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
 
 # VNDK
 BOARD_VNDK_VERSION := current
