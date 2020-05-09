@@ -93,6 +93,9 @@ QCOM_BT_USE_SMD_TTY := true
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
+# Drm
+TARGET_ENABLE_MEDIADRM_64 := true
+
 # HIDL
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := device/xiaomi/olive/configs/vendor_framework_compatibility_matrix.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE := device/xiaomi/olive/configs/framework_manifest.xml
