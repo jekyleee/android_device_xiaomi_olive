@@ -96,16 +96,6 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 # Drm
 TARGET_ENABLE_MEDIADRM_64 := true
 
-# FM
-BOARD_HAVE_QCOM_FM := true
-TARGET_QCOM_NO_FM_FIRMWARE := true
-
-# HIDL
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := device/xiaomi/olive/configs/vendor_framework_compatibility_matrix.xml
-DEVICE_FRAMEWORK_MANIFEST_FILE := device/xiaomi/olive/configs/framework_manifest.xml
-DEVICE_MANIFEST_FILE := device/xiaomi/olive/configs/manifest.xml
-DEVICE_MATRIX_FILE   := device/xiaomi/olive/configs/compatibility_matrix.xml
-
 # Dex-preopt
 ifeq ($(HOST_OS),linux)
   ifneq ($(TARGET_BUILD_VARIANT),eng)
@@ -119,6 +109,16 @@ endif
 # Display
 TARGET_USES_GRALLOC1 := true
 TARGET_USES_HWC2 := true
+
+# FM
+BOARD_HAVE_QCOM_FM := true
+TARGET_QCOM_NO_FM_FIRMWARE := true
+
+# HIDL
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := device/xiaomi/olive/configs/vendor_framework_compatibility_matrix.xml
+DEVICE_FRAMEWORK_MANIFEST_FILE := device/xiaomi/olive/configs/framework_manifest.xml
+DEVICE_MANIFEST_FILE := device/xiaomi/olive/configs/manifest.xml
+DEVICE_MATRIX_FILE   := device/xiaomi/olive/configs/compatibility_matrix.xml
 
 # Kernel
 BOARD_KERNEL_BASE := 0x80000000
@@ -164,18 +164,6 @@ BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 #BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 #BOARD_USES_VENDORIMAGE := true
 
-# SELinux
-BOARD_PLAT_PRIVATE_SEPOLICY_DIR += device/qcom/sepolicy/private
-BOARD_PLAT_PUBLIC_SEPOLICY_DIR += device/qcom/sepolicy/public
-BOARD_SEPOLICY_DIRS += device/xiaomi/olive/sepolicy/temp
-
-# Qualcomm support
-BOARD_USES_QCOM_HARDWARE := true
-
-# Recovery
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/twrp.qcom
-TARGET_USERIMAGES_USE_EXT4 := true
-
 # Power
 TARGET_TAP_TO_WAKE_NODE := "/dev/input/event3"
 
@@ -184,6 +172,18 @@ TARGET_SYSTEM_PROP += device/xiaomi/olive/system.prop
 
 # Release Tools
 TARGET_RELEASETOOLS_EXTENSIONS := device/xiaomi/olive
+
+# Recovery
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/twrp.qcom
+TARGET_USERIMAGES_USE_EXT4 := true
+
+# SELinux
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR += device/qcom/sepolicy/private
+BOARD_PLAT_PUBLIC_SEPOLICY_DIR += device/qcom/sepolicy/public
+BOARD_SEPOLICY_DIRS += device/xiaomi/olive/sepolicy/temp
+
+# Qualcomm support
+BOARD_USES_QCOM_HARDWARE := true
 
 # Verity
 BOARD_AVB_ENABLE := true
