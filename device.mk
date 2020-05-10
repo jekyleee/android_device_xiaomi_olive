@@ -89,6 +89,10 @@ PRODUCT_PACKAGES += \
     FMRadio \
     libfmjni
 
+# IMS
+PRODUCT_PACKAGES += \
+    ims-ext-common
+
 # GPS
 PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0-impl-qti \
