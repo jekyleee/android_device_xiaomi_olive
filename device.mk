@@ -190,10 +190,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/privapp-permissions-qti.xml
 
-# Bluetooth
-PRODUCT_PACKAGES += \
-    audio.a2dp.default
-
 # HIDL
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
