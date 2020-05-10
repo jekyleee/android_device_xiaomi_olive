@@ -265,6 +265,13 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/xiaomi/olive/configs/securelock.xml:system/etc/permissions/securelock.xml
 
+# Telephony
+PRODUCT_PACKAGES += \
+    telephony-ext
+
+PRODUCT_BOOT_JARS += \
+    telephony-ext
+
 # VNDK
 PRODUCT_PACKAGES += \
     vndk_package \
