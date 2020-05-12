@@ -138,7 +138,7 @@ TARGET_KERNEL_HEADER_ARCH := arm64
 #TARGET_KERNEL_SOURCE := kernel/xiaomi/olive
 #TARGET_KERNEL_CONFIG := olive-perf_defconfig
 #TARGET_KERNEL_CLANG_COMPILE := true
-TARGET_PREBUILT_KERNEL:= device/xiaomi/olive/Image.gz-dtb
+TARGET_PREBUILT_KERNEL:= device/xiaomi/olive/prebuilt/Image.gz-dtb
 #Kernel Reparation
 TEMPORARY_DISABLE_PATH_RESTRICTIONS=true
 
