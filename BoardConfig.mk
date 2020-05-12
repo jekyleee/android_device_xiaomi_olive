@@ -174,7 +174,7 @@ TARGET_SYSTEM_PROP += device/xiaomi/olive/system.prop
 TARGET_RELEASETOOLS_EXTENSIONS := device/xiaomi/olive
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/twrp.qcom
+TARGET_RECOVERY_FSTAB := device/xiaomi/olive/recovery/root/etc/twrp.qcom
 TARGET_USERIMAGES_USE_EXT4 := true
 
 # SELinux
