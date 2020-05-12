@@ -17,7 +17,7 @@
 
 set -e
 
-DEVICE=pine
+DEVICE=olive
 VENDOR=xiaomi
 
 INITIAL_COPYRIGHT_YEAR=2019
