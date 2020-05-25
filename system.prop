@@ -309,7 +309,4 @@ persist.bg.dexopt.enable=true
 #audio parameter version
 audio_para_version=C3I-Audiopara-V15-20191111
 
-
-# Brightness
- persist.sys.qcom-brightness="$(cat /sys/class/leds/lcd-backlight/max_brightness)"
 #
