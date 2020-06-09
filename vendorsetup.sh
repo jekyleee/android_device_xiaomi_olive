@@ -14,4 +14,6 @@
 # limitations under the License.
 #
 
-add_lunch_combo lineage_pine-userdebug
+add_lunch_combo lineage_olive-user
+add_lunch_combo lineage_olive-eng
+add_lunch_combo lineage_olive-userdebug
