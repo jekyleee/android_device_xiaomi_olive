@@ -14,7 +14,9 @@
 # limitations under the License.
 #
 
-
+# IMS
+PRODUCT_PACKAGES += \
+    ims-ext-common
 
 # FM
 PRODUCT_PACKAGES += \
