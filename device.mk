@@ -15,6 +15,14 @@
 #
 
 
+# Thermal
+PRODUCT_PACKAGES += \
+    thermal.ms8937
+
+PRODUCT_PACKAGES += \
+    android.hardware.thermal@1.0-impl \
+    android.hardware.thermal@1.0-service
+
 # Ramdisk
 #PRODUCT_PACKAGES += \
     #init.class_late.sh \
