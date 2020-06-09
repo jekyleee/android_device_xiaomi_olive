@@ -80,4 +80,4 @@ PRODUCT_PACKAGES += \
 -include $(LOCAL_PATH)/system_prop.mk
 
 # Call proprietary blob setup
-$(call inherit-product-if-exists, vendor/xiaomi/pine/pine-vendor.mk)
+$(call inherit-product-if-exists, vendor/xiaomi/olive/olive-vendor.mk)
