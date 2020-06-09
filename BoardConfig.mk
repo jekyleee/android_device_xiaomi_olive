@@ -91,12 +91,13 @@ include device/qcom/sepolicy/sepolicy.mk
 BOARD_USES_QCOM_HARDWARE := true
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/twrp.fstab
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/recovery.fstab
 TARGET_USERIMAGES_USE_EXT4 := true
 
 # Verity
-BOARD_AVB_ENABLE := false
-BOARD_BUILD_DISABLED_VBMETA_IMAGE := true
+BOARD_AVB_ENABLE := true
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
 
 # VNDK
 BOARD_VNDK_VERSION := current
