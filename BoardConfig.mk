@@ -15,7 +15,8 @@
 #
 
 
-
+# Seecomp
+BOARD_SECCOMP_POLICY := $(VENDOR_PATH)/seccomp
 
 
 
