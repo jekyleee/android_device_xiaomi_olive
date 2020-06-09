@@ -62,8 +62,8 @@ BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_KERNEL_VERSION := 4.9
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
-TARGET_KERNEL_SOURCE := kernel/xiaomi/pine
-TARGET_KERNEL_CONFIG := pine-perf_defconfig
+TARGET_KERNEL_SOURCE := kernel/xiaomi/olive
+TARGET_KERNEL_CONFIG := olive-perf_defconfig
 TARGET_KERNEL_CLANG_COMPILE := true
 
 # OTA
