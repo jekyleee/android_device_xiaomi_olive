@@ -85,8 +85,7 @@ BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_HAS_LARGE_FILESYSTEM := true
 
 # SELinux
-BOARD_PLAT_PRIVATE_SEPOLICY_DIR += device/qcom/sepolicy/private
-BOARD_PLAT_PUBLIC_SEPOLICY_DIR += device/qcom/sepolicy/public
+include device/qcom/sepolicy/sepolicy.mk
 
 # Qualcomm support
 BOARD_USES_QCOM_HARDWARE := true
