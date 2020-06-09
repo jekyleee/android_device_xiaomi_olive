@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+#Drm
+TARGET_ENABLE_MEDIADRM_64 := true
 
 
 #Charger
