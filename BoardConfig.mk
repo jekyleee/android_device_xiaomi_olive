@@ -15,6 +15,11 @@
 #
 
 
+
+# RIL
+TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
+TARGET_RIL_VARIANT := caf
+
 # Seecomp
 BOARD_SECCOMP_POLICY := $(VENDOR_PATH)/seccomp
 
