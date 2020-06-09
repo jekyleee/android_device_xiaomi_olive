@@ -15,7 +15,9 @@
 #
 
 
-
+# For config.fs
+PRODUCT_PACKAGES += \
+    fs_config_files
 
 
 # Gatekeeper HAL
@@ -309,6 +311,8 @@ PRODUCT_PACKAGES += \
 
 # Net
 PRODUCT_PACKAGES += \
+    android.system.net.netd@1.0 \
+    libandroid_net \
     netutils-wrapper-1.0
 
 # RCS
