@@ -14,6 +14,11 @@
 # limitations under the License.
 #
 
+
+DEVICE_FRAMEWORK_MANIFEST_FILE := device/xiaomi/olive/framework_manifest.xml
+DEVICE_MANIFEST_FILE := device/xiaomi/olive/manifest.xml
+DEVICE_MATRIX_FILE   := device/xiaomi/olive/compatibility_matrix.xml
+
 # Filesystem
 TARGET_FS_CONFIG_GEN := device/xiaomi/olive/config.fs
 
