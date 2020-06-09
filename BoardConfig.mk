@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+# Filesystem
+TARGET_FS_CONFIG_GEN := device/xiaomi/olive/config.fs
+
 
 # Power
 TARGET_TAP_TO_WAKE_NODE := "/dev/input/event3"
