@@ -14,7 +14,8 @@
 # limitations under the License.
 #
 
-
+# ANT+
+BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
 
 TARGET_RELEASETOOLS_EXTENSIONS := device/xiaomi/olive
 
