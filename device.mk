@@ -22,6 +22,8 @@
 
 
 
+PRODUCT_PACKAGES += \
+    XiaomiDoze
 
 
 # Seccomp policy
