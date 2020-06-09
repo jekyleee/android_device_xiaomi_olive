@@ -1,6 +1,9 @@
 [
   {
-    "repository": "android_kernel_xiaomi_pine",
-    "target_path": "kernel/xiaomi/pine"
+    "repository": "android_kernel_xiaomi_olive",
+    "target_path": "kernel/xiaomi/olive"
   }
-]
+  {
+    "repository": "android_packages_resources_devicesettings",
+    "target_path": "packages/resources/devicesettings"
+  }
