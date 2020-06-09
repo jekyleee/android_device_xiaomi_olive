@@ -291,7 +291,7 @@ PRODUCT_PACKAGES += \
     vndk_package
 
 # System properties
--include $(LOCAL_PATH)/system_prop.mk
+-include $(LOCAL_PATH)/vendor_prop.mk
 
 # Call proprietary blob setup
 $(call inherit-product-if-exists, vendor/xiaomi/olive/olive-vendor.mk)
