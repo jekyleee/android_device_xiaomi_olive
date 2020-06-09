@@ -15,6 +15,12 @@
 #
 
 
+
+
+# Light
+PRODUCT_PACKAGES += \
+    android.hardware.light@2.0-service.xiaomi_olive
+
 # IRQ
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf \
