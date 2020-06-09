@@ -14,6 +14,17 @@
 # limitations under the License.
 #
 
+
+
+
+
+
+# GPS
+BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := true
+USE_DEVICE_SPECIFIC_GPS := true
+
+
+
 # ANT+
 BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
 
