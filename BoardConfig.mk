@@ -14,6 +14,10 @@
 # limitations under the License.
 #
 
+
+# Power
+TARGET_TAP_TO_WAKE_NODE := "/dev/input/event3"
+
 # Architecture
 TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv8-a
