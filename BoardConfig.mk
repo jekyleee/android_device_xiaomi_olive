@@ -15,6 +15,10 @@
 #
 
 
+# FM
+BOARD_HAVE_QCOM_FM := true
+TARGET_QCOM_NO_FM_FIRMWARE := true
+
 DEVICE_FRAMEWORK_MANIFEST_FILE := device/xiaomi/olive/framework_manifest.xml
 DEVICE_MANIFEST_FILE := device/xiaomi/olive/manifest.xml
 DEVICE_MATRIX_FILE   := device/xiaomi/olive/compatibility_matrix.xml
