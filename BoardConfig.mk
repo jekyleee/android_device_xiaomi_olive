@@ -101,6 +101,8 @@ BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
 
 # VNDK
 BOARD_VNDK_VERSION := current
+BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
+PRODUCT_FULL_TREBLE_OVERRIDE := true
 
 # Inherit proprietary version
 -include vendor/xiaomi/pine/BoardConfigVendor.mk
