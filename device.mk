@@ -14,6 +14,17 @@
 # limitations under the License.
 #
 
+
+
+
+
+
+#Securelock
+PRODUCT_COPY_FILES += \
+    device/xiaomi/olive/securelock.xml:system/etc/permissions/securelock.xml
+
+
+
 # IMS
 PRODUCT_PACKAGES += \
     ims-ext-common
