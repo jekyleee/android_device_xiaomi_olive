@@ -108,5 +108,8 @@ BOARD_VNDK_VERSION := current
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 
+# Props
+TARGET_SYSTEM_PROP += device/xiaomi/olive/system.prop
+
 # Inherit proprietary version
 -include vendor/xiaomi/pine/BoardConfigVendor.mk
