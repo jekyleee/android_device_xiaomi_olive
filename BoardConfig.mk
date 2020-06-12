@@ -127,9 +127,10 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_HAVE_QCOM_FM := true
 TARGET_QCOM_NO_FM_FIRMWARE := true
 
-DEVICE_FRAMEWORK_MANIFEST_FILE := device/xiaomi/olive/framework_manifest.xml
+# HIDL
 DEVICE_MANIFEST_FILE := device/xiaomi/olive/manifest.xml
-DEVICE_MATRIX_FILE   := device/xiaomi/olive/compatibility_matrix.xml
+DEVICE_MATRIX_FILE := device/xiaomi/olive/compatibility_matrix.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := device/xiaomi/olive/framework_compatibility_matrix.xml
 
 # Filesystem
 TARGET_FS_CONFIG_GEN := device/xiaomi/olive/config.fs
