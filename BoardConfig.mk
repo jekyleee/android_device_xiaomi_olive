@@ -222,7 +222,7 @@ include device/qcom/sepolicy/sepolicy.mk
 BOARD_USES_QCOM_HARDWARE := true
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/recovery.fstab
+TARGET_RECOVERY_FSTAB := device/xiaomi/olive/recovery/root/etc/recovery.fstab
 TARGET_USERIMAGES_USE_EXT4 := true
 
 # Verity
