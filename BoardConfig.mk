@@ -218,6 +218,7 @@ BOARD_HAS_LARGE_FILESYSTEM := true
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
+BOARD_SEPOLICY_DIRS += device/xiaomi/olive/sepolicy-minimal
 
 # Qualcomm support
 BOARD_USES_QCOM_HARDWARE := true
