@@ -23,7 +23,7 @@ PRODUCT_PACKAGES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    Snap
+    camera.msm8937
 
 PRODUCT_PACKAGES += \
     camera.device@1.0-impl \
@@ -31,10 +31,7 @@ PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
     android.hardware.camera.provider@2.4-service \
     vendor.qti.hardware.camera.device@1.0 \
-    vendor.qti.hardware.camera.device@1.0_vendor \
-    libmmjpeg_interface \
-    libmm-qcamera \
-    android.frameworks.displayservice@1.0
+    vendor.qti.hardware.camera.device@1.0_vendor
 
 
 
@@ -226,10 +223,11 @@ PRODUCT_PACKAGES += \
     #init.qti.qseecomd.sh \
     #qca6234-service.sh \
     #init.msm.usb.configfs.rc \
-    #3init.qcom.factory.rc \
+    #init.qcom.factory.rc \
     #init.qcom.rc \
     #init.qcom.usb.rc \
-    #ueventd.qcom.rc
+    #ueventd.qcom.rc \
+
 
 
 # Telephony
@@ -433,4 +431,4 @@ PRODUCT_PACKAGES += \
 -include $(LOCAL_PATH)/vendor_prop.mk
 
 # Call proprietary blob setup
-$(call inherit-product-if-exists, vendor/xiaomi/olive/olive-vendor.mk)
+#$(call inherit-product-if-exists, vendor/xiaomi/olive/olive-vendor.mk)
