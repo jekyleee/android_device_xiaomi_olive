@@ -14,7 +14,19 @@
 # limitations under the License.
 #
 
+DEVICE_PATH := device/xiaomi/olive
+BOARD_VENDOR := xiaomi
 
+# Security patch level
+VENDOR_SECURITY_PATCH := 2020-01-01
+
+
+
+
+# Camera
+BOARD_QTI_CAMERA_32BIT_ONLY := true
+TARGET_USES_QTI_CAMERA_DEVICE := true
+USE_DEVICE_SPECIFIC_CAMERA := true
 
 # RIL
 TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
@@ -204,20 +216,21 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 4831838208
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 22410148864
 BOARD_CACHEIMAGE_PARTITION_SIZE := 402653184
 BOARD_PERSISTIMAGE_PARTITION_SIZE := 33554432
-#BOARD_VENDORIMAGE_PARTITION_SIZE := 1610612736
+BOARD_VENDORIMAGE_PARTITION_SIZE := 1610612736
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 BOARD_ROOT_EXTRA_SYMLINKS := \
     /vendor/firmware_mnt:/firmware \
     /mnt/vendor/persist:/persist
-BOARD_PREBUILT_VENDORIMAGE := device/xiaomi/olive/vendor.img
+#BOARD_PREBUILT_VENDORIMAGE := device/xiaomi/olive/vendor.img
 TARGET_COPY_OUT_VENDOR := vendor
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-#BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-#BOARD_USES_VENDORIMAGE := true
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_HAS_LARGE_FILESYSTEM := true
+TARGET_USERIMAGES_USE_EXT4 := true
+#BOARD_USES_VENDORIMAGE := true
 
 # SELinux
-include device/qcom/sepolicy/sepolicy.mk
+#include device/qcom/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_DIRS += device/xiaomi/olive/sepolicy-minimal
 
 # Qualcomm support
@@ -225,7 +238,7 @@ BOARD_USES_QCOM_HARDWARE := true
 
 # Recovery
 TARGET_RECOVERY_FSTAB := device/xiaomi/olive/recovery/root/etc/recovery.fstab
-TARGET_USERIMAGES_USE_EXT4 := true
+
 
 # Verity
 BOARD_AVB_ENABLE := true
@@ -244,7 +257,7 @@ TARGET_SYSTEM_PROP += device/xiaomi/olive/system.prop
 # Wifi
 BOARD_HAS_QCOM_WLAN := true
 BOARD_HAS_QCOM_WLAN_SDK := true
-BOARD_WLAN_DEVICE := qcwcn
+#BOARD_WLAN_DEVICE := qcwcn
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
 BOARD_HOSTAPD_DRIVER := NL80211
@@ -253,7 +266,7 @@ HOSTAPD_VERSION := VER_0_8_X
 WIFI_DRIVER_FW_PATH_AP := "ap"
 WIFI_DRIVER_FW_PATH_STA := "sta"
 WIFI_DRIVER_FW_PATH_P2P := "p2p"
-WPA_SUPPLICANT_VERSION := VER_0_8_X
+
 
 # Inherit proprietary version
--include vendor/xiaomi/pine/BoardConfigVendor.mk
+#-include vendor/xiaomi/olive/BoardConfigVendor.mk
