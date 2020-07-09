@@ -48,14 +48,14 @@ on fs
     chown root system /mnt/vendor/persist
     chmod 0771 /mnt/vendor/persist
     mkdir /mnt/vendor/persist/data 0700 system system
-    mkdir /mnt/vendor/persist/stability 0755 system system
     mkdir /mnt/vendor/persist/bms 0700 root system
+    mkdir /mnt/vendor/persist/stability 0755 system system
+    mkdir /mnt/vendor/persist/misys 0755 system system
     restorecon_recursive /mnt/vendor/persist
 
     #write /sys/kernel/boot_adsp/boot 1
-
-#   wait /dev/block/bootdevice/by-name/oem
-#   mount ext4 /dev/block/bootdevice/by-name/oem /oem ro nosuid nodev barrier=1
+    chmod 0664 /sys/class/thermal/thermal_message/sconfig
+    chown system system /sys/class/thermal/thermal_message/sconfig
     mkdir /persist/camera/
     chmod 0777 /persist/camera/
     chown cameraserver audio  /persist/camera/rear_dc_cal_wt.bin
@@ -64,7 +64,6 @@ on fs
 on post-fs
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
-    insmod /vendor/lib/modules/exfat.ko
 
     start vendor.qseecomd
     exec - system system -- /vendor/bin/init.qti.qseecomd.sh
@@ -80,7 +79,6 @@ on post-fs-data
     mkdir /persist/data/tz 0700 system system
     mkdir /data/vendor/hbtp 0750 system system
     mkdir /data/misc/dts 0770 media audio
-    mkdir /data/vendor/tloc 0700 system drmrpc
     mkdir /persist/camera  0777 system system
     mkdir /data/vendor/thermal 0771 root system
     mkdir /data/vendor/thermal/config 0771 root system
@@ -149,6 +147,7 @@ on property:sys.boot_completed=1
    chmod 0666 /data/vendor/charge_logger/charge_logger_b.csv
 
 service vendor.qseecomd /vendor/bin/qseecomd
+   shutdown critical
    class core
    user root
    group root
@@ -165,32 +164,15 @@ service PcbaConfigSet /system/vendor/bin/PcbaConfigSet
 #   user system
 #   group system net_raw
 
-service perfd /system/vendor/bin/perfd
-   class main
-   user root
-   disabled
-
-service gamed /system/vendor/bin/gamed
-   class main
-   user system
-   group system
-   disabled
-   socket gamed seqpacket 0640 system system
-
 service thermal-engine /system/vendor/bin/thermal-engine
    class main
    user root
-   chmod 0664 /sys/class/thermal/thermal_message/sconfig
-   chown system system /sys/class/thermal/thermal_message/sconfig
+   #chmod 0664 /sys/class/thermal/thermal_message/sconfig
+   #chown system system /sys/class/thermal/thermal_message/sconfig
    socket thermal-send-client stream 0666 system system
    socket thermal-recv-client stream 0660 system system
    socket thermal-recv-passive-client stream 0666 system system
    socket thermal-send-rule stream 0660 system system
-   group root
-
-service time_daemon /system/vendor/bin/time_daemon
-   class late_start
-   user root
    group root
 
 service audiod /system/vendor/bin/audiod
@@ -223,11 +205,6 @@ on boot
    chown cameraserver cameraserver /dev/cpuset/camera-daemon/tasks
    chmod 0660 /dev/cpuset/camera-daemon/tasks
 
-# access permissions for FPC service
-   chown system system /sys/bus/platform/devices/soc/soc:fpc1020/irq
-   chown system system /sys/bus/platform/devices/soc/soc:fpc1020/wakeup_enable
-   chmod 0666 /dev/qseecom
-
 ####Regionalization config and prop files####
     chmod 0644 /persist/speccfg/spec
     chmod 0644 /persist/speccfg/devicetype
@@ -250,12 +227,11 @@ on boot
     chown system system /mnt/vendor/persist/WCNSS_qcom_wlan_nv.bin
 
 #USB controller configuration
-    write /sys/module/g_android/parameters/mtp_tx_req_len 131072
-    write /sys/module/g_android/parameters/mtp_rx_req_len 131072
     setprop vendor.usb.rndis.func.name "rndis"
     setprop vendor.usb.rmnet.func.name "rmnet_bam"
     setprop vendor.usb.rmnet.inst.name "rmnet_bam_dmux"
     setprop vendor.usb.dpl.inst.name "dpl_bam_dmux"
+    setprop vendor.usb.qdss.inst.name "qdss"
 
 service wcnss-service /system/vendor/bin/wcnss_service
     class main
@@ -330,21 +306,60 @@ on property:init.svc.zygote=running
 on property:init.svc.zygote=restarting
     stop ppd
 
+# add for huaqin ftm test by panghongbo begin
+service redledon /system/vendor/bin/factory_bin r 1
+    user system
+    oneshot
+    disabled
+
+on property:sys.redledon=1
+    start redledon
+
+service redledoff /system/vendor/bin/factory_bin r 0
+    user system
+    oneshot
+    disabled
+
+on property:sys.redledoff=1
+    start redledoff
+
+service whiteflashon /system/vendor/bin/factory_bin w 1
+    user root
+    oneshot
+    disabled
+
+service openpocket /vendor/bin/scancode_bin p 1
+    user root
+    oneshot
+    disabled
+
+service closepocket /vendor/bin/scancode_bin p 0
+    user root
+    oneshot
+    disabled
+
+on property:sys.whiteflashon=1
+    start whiteflashon
+
+service whiteflashoff /system/vendor/bin/factory_bin w 0
+    user root
+    oneshot
+    disabled
+
+on property:sys.whiteflashoff=1
+    start whiteflashoff
+# add for huaqin ftm test by panghongbo end
+
 on charger
     wait /dev/block/bootdevice/by-name/system
     mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1
-    load_all_props
-    setprop persist.sys.usb.config mass_storage
+    load_system_props
+    setprop sys.usb.configfs 1
     start qcom-post-boot
     setprop persist.sys.usb.config mass_storage
     start vendor.hvdcp_opti
     start vendor.vm_bms
-
-on charger && property:ro.boot.usbconfigfs=true
-    setprop sys.usb.configfs 1
-
-on charger && property:ro.boot.usbconfigfs=false
-    setprop sys.usb.configfs 0
+    start vendor.power_off_alarm
 
 service hbtp /system/vendor/bin/hbtp_daemon
     class main
@@ -388,7 +403,6 @@ on property:init.svc.vendor.per_mgr=running
 
 on property:sys.shutdown.requested=*
     stop vendor.per_proxy
-    stop vendor.ims_rtp_daemon
 
 service vendor.hvdcp_opti /vendor/bin/hvdcp_opti
     class main
@@ -406,32 +420,14 @@ service mdtpd /system/vendor/bin/mdtpd
     group system radio drmrpc
 
 on boot
-    mkdir /dev/cpuset/top-app/boost
-    write /dev/cpuset/top-app/boost/mems 0
-
-    write /dev/cpuset/foreground/boost/cpus 4-7
-    write /dev/cpuset/foreground/cpus 0-2,4-7
-    write /dev/cpuset/background/cpus 0-1
-    write /dev/cpuset/system-background/cpus 0-2
-    write /dev/cpuset/top-app/cpus 0-7
-    write /dev/cpuset/top-app/boost/cpus 4-7
-
-    chown system system /dev/cpuset/top-app/boost
-    chown system system /dev/cpuset/top-app/boost/tasks
-
-    chmod 0664 /dev/cpuset/top-app/boost/tasks
-
     write /sys/devices/soc.0/78b8000.i2c/i2c-4/4-0020/input/input0/fw_name PR1702898-s3528t_00260005_00380008.img
     write /sys/devices/soc.0/78b8000.i2c/i2c-4/4-0020/input/input0/update_fw 1
     #add for ignoring modem crash
     write /sys/bus/msm_subsys/devices/subsys4/restart_level related
     #Ignore wcnss crash, WCN SSR enable
     write /sys/bus/msm_subsys/devices/subsys3/restart_level related
-
-service vendor.tlocd /vendor/bin/tloc_daemon
-    class late_start
-    user system
-    group drmrpc gps net_raw
+    #Ignore adsp crash, adsp SSR enable
+    write /sys/bus/msm_subsys/devices/subsys2/restart_level related
 
 on boot
     chown system system /sys/class/leds/red/blink
@@ -454,13 +450,6 @@ on boot
     chmod 0666 /sys/bus/spi/devices/spi3.2/fts_rw_reg
 write /sys/kernel/boot_adsp/boot 1
 
-service checknv /system/bin/checknv
-    class late_start
-    user root
-    oneshot
-    seclabel u:r:vendor_init:s0
-
-########### FTM begin ##########
 service gsensortest /system/vendor/bin/sensors_test g
     user root
     oneshot
@@ -508,6 +497,12 @@ service hwdiag vendor/bin/hwdiag
     seclabel u:r:hwdiag:s0
 ## add for ap diag end
 
+service checknv /system/bin/checknv
+    class late_start
+    user root
+    oneshot
+    seclabel u:r:vendor_init:s0
+
 on boot
     start hwdiag
     chown root root /sys/class/huaqin/interface/hw_info/lcm
@@ -537,7 +532,7 @@ on boot
     chmod 0777 /dev/block/mmcblk0p44
     #add by yufei for dual calibration SR-QL2115-01000000567
     chmod 0775 /data/vendor/camera
- 
+
 ##### factory current test begin #####
 service screentimeout /system/bin/sh /system/vendor/etc/init.qcom.screentimeout.sh
     class main
@@ -549,30 +544,12 @@ service screentimeout /system/bin/sh /system/vendor/etc/init.qcom.screentimeout.
 on property:sys.screentimeout=1
     start screentimeout
 ##### factory current test end #####
-
 service audioshell_service /vendor/bin/audioshell_service
     oneshot
     disabled
 
 on property:ro.vendor.miui.region=*
     start audioshell_service
-
-##### MMI LED test begin #####
-service redledon /system/vendor/bin/factory_bin r 1
-    user system
-    oneshot
-    disabled
-
-on property:sys.redledon=1
-    start redledon
-
-service redledoff /system/vendor/bin/factory_bin r 0
-    user system
-    oneshot
-    disabled
-
-on property:sys.redledoff=1
-    start redledoff
 
 service screenmode0 /vendor/bin/scancode_bin s 0
     user root
@@ -589,31 +566,6 @@ service screenmode3 /vendor/bin/scancode_bin s 3
     oneshot
     disabled
 
-service whiteflashon /system/vendor/bin/factory_bin w 1
-    user root
-    oneshot
-    disabled
-
-service openpocket /vendor/bin/scancode_bin p 1
-    user root
-    oneshot
-    disabled
-
-service closepocket /vendor/bin/scancode_bin p 0
-    user root
-    oneshot
-    disabled
-
-on property:sys.whiteflashon=1
-    start whiteflashon
-
-service whiteflashoff /system/vendor/bin/factory_bin w 0
-    user root
-    oneshot
-    disabled
-
-on property:sys.whiteflashoff=1
-    start whiteflashoff
 
 #add for scancode by wangzhengting_20190603
 service scancode /vendor/bin/scancode_bin qr prop
@@ -635,9 +587,6 @@ service maxcurrent_incall /vendor/bin/scancode_bin m 1
     disabled
 on property:sys.m.incall=1
     start maxcurrent_incall
-
-##### MMI LED test end #####
-########### FTM end ##########
 
 # add wifibtrxtx start
 service wbrf_service /system/bin/wbrf_bin
@@ -669,63 +618,67 @@ service closead /system/vendor/bin/displayf_bin s 0
 on property:sys.hq.ad=0
     start closead
 #####copy megvii files#####
-on property:sys.boot_completed=1
-mkdir /data/vendor/camera/westalgo 0777 cameraserver audio
-mkdir /data/vendor/camera/westalgo/dof_model 0777 cameraserver audio
-mkdir /data/vendor/camera/westalgo/rt_model 0777 cameraserver audio
-mkdir /data/vendor/camera/westalgo/rt_model/mask 0777 cameraserver audio
-mkdir /data/vendor/camera/westalgo/rt_model/score 0777 cameraserver audio
-copy /vendor/etc/westalgo/dof_model/cache_data /data/vendor/camera/westalgo/dof_model/cache_data
-chown cameraserver audio  /data/vendor/camera/westalgo/dof_model/cache_data
-chmod 0777 /data/vendor/camera/westalgo/dof_model/cache_data
-copy /vendor/etc/westalgo/dof_model/megviisegment_model /data/vendor/camera/westalgo/dof_model/megviisegment_model
-chown cameraserver audio  /data/vendor/camera/westalgo/dof_model/megviisegment_model
-chmod 0777 /data/vendor/camera/westalgo/dof_model/megviisegment_model
-copy /vendor/etc/westalgo/dof_model/model_mdl_cache /data/vendor/camera/westalgo/dof_model/model_mdl_cache
-chown cameraserver audio  /data/vendor/camera/westalgo/dof_model/model_mdl_cache
-chmod 0777 /data/vendor/camera/westalgo/dof_model/model_mdl_cache
-copy /vendor/etc/westalgo/rt_model/mask/cache_data /data/vendor/camera/westalgo/rt_model/mask/cache_data
-chown cameraserver audio  /data/vendor/camera/westalgo/rt_model/mask/cache_data
-chmod 0777 /data/vendor/camera/westalgo/rt_model/mask/cache_data
-copy /vendor/etc/westalgo/rt_model/mask/megviisegment_model /data/vendor/camera/westalgo/rt_model/mask/megviisegment_model
-chown cameraserver audio  /data/vendor/camera/westalgo/rt_model/mask/megviisegment_model
-chmod 0777 /data/vendor/camera/westalgo/rt_model/mask/megviisegment_model
-copy /vendor/etc/westalgo/rt_model/mask/model_mdl_cache /data/vendor/camera/westalgo/rt_model/mask/model_mdl_cache
-chown cameraserver audio  /data/vendor/camera/westalgo/rt_model/mask/model_mdl_cache
-chmod 0777 /data/vendor/camera/westalgo/rt_model/mask/model_mdl_cache
-copy /vendor/etc/westalgo/rt_model/score/cache_data /data/vendor/camera/westalgo/rt_model/score/cache_data
-chown cameraserver audio  data/vendor/camera/westalgo/rt_model/score/cache_data
-chmod 0777 data/vendor/camera/westalgo/rt_model/score/cache_data
-copy /vendor/etc/westalgo/rt_model/score/megviisegment_model /data/vendor/camera/westalgo/rt_model/score/megviisegment_model
-chown cameraserver audio  /data/vendor/camera/westalgo/rt_model/score/megviisegment_model
-chmod 0777 /data/vendor/camera/westalgo/rt_model/score/megviisegment_model
-copy /vendor/etc/westalgo/rt_model/score/model_mdl_cache /data/vendor/camera/westalgo/rt_model/score/model_mdl_cache
-chown cameraserver audio  /data/vendor/camera/westalgo/rt_model/score/model_mdl_cache
-chmod 0777 /data/vendor/camera/westalgo/rt_model/score/model_mdl_cache
-chown cameraserver audio  /persist/camera/dualcam_cali_megvii.bin
-chmod 0777 /persist/camera/dualcam_cali_megvii.bin
+    on property:sys.boot_completed=1
+    mkdir /data/vendor/camera/westalgo 0777 cameraserver audio
+    mkdir /data/vendor/camera/westalgo/dof_model 0777 cameraserver audio
+    mkdir /data/vendor/camera/westalgo/rt_model 0777 cameraserver audio
+    mkdir /data/vendor/camera/westalgo/rt_model/mask 0777 cameraserver audio
+    mkdir /data/vendor/camera/westalgo/rt_model/score 0777 cameraserver audio
+    copy /vendor/etc/westalgo/dof_model/cache_data /data/vendor/camera/westalgo/dof_model/cache_data
+    chown cameraserver audio  /data/vendor/camera/westalgo/dof_model/cache_data
+    chmod 0777 /data/vendor/camera/westalgo/dof_model/cache_data
+    copy /vendor/etc/westalgo/dof_model/megviisegment_model /data/vendor/camera/westalgo/dof_model/megviisegment_model
+    chown cameraserver audio  /data/vendor/camera/westalgo/dof_model/megviisegment_model
+    chmod 0777 /data/vendor/camera/westalgo/dof_model/megviisegment_model
+    copy /vendor/etc/westalgo/dof_model/model_mdl_cache /data/vendor/camera/westalgo/dof_model/model_mdl_cache
+    chown cameraserver audio  /data/vendor/camera/westalgo/dof_model/model_mdl_cache
+    chmod 0777 /data/vendor/camera/westalgo/dof_model/model_mdl_cache
+    copy /vendor/etc/westalgo/rt_model/mask/cache_data /data/vendor/camera/westalgo/rt_model/mask/cache_data
+    chown cameraserver audio  /data/vendor/camera/westalgo/rt_model/mask/cache_data
+    chmod 0777 /data/vendor/camera/westalgo/rt_model/mask/cache_data
+    copy /vendor/etc/westalgo/rt_model/mask/megviisegment_model /data/vendor/camera/westalgo/rt_model/mask/megviisegment_model
+    chown cameraserver audio  /data/vendor/camera/westalgo/rt_model/mask/megviisegment_model
+    chmod 0777 /data/vendor/camera/westalgo/rt_model/mask/megviisegment_model
+    copy /vendor/etc/westalgo/rt_model/mask/model_mdl_cache /data/vendor/camera/westalgo/rt_model/mask/model_mdl_cache
+    chown cameraserver audio  /data/vendor/camera/westalgo/rt_model/mask/model_mdl_cache
+    chmod 0777 /data/vendor/camera/westalgo/rt_model/mask/model_mdl_cache
+    copy /vendor/etc/westalgo/rt_model/score/cache_data /data/vendor/camera/westalgo/rt_model/score/cache_data
+    chown cameraserver audio  data/vendor/camera/westalgo/rt_model/score/cache_data
+    chmod 0777 data/vendor/camera/westalgo/rt_model/score/cache_data
+    copy /vendor/etc/westalgo/rt_model/score/megviisegment_model /data/vendor/camera/westalgo/rt_model/score/megviisegment_model
+    chown cameraserver audio  /data/vendor/camera/westalgo/rt_model/score/megviisegment_model
+    chmod 0777 /data/vendor/camera/westalgo/rt_model/score/megviisegment_model
+    copy /vendor/etc/westalgo/rt_model/score/model_mdl_cache /data/vendor/camera/westalgo/rt_model/score/model_mdl_cache
+    chown cameraserver audio  /data/vendor/camera/westalgo/rt_model/score/model_mdl_cache
+    chmod 0777 /data/vendor/camera/westalgo/rt_model/score/model_mdl_cache
+    chown cameraserver audio  /persist/camera/dualcam_cali_megvii.bin
+    chmod 0777 /persist/camera/dualcam_cali_megvii.bin
 #add golden bin
-copy /vendor/etc/camera/golden_rear_dc_cal_wt_imx363_ov02a10.bin /data/vendor/camera/golden_rear_dc_cal_wt_imx363_ov02a10.bin
-chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_imx363_ov02a10.bin
-chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_imx363_ov02a10.bin
+    copy /vendor/etc/camera/golden_rear_dc_cal_wt_imx363_ov02a10.bin /data/vendor/camera/golden_rear_dc_cal_wt_imx363_ov02a10.bin
+    chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_imx363_ov02a10.bin
+    chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_imx363_ov02a10.bin
 
-copy /vendor/etc/camera/golden_rear_dc_cal_wt_imx486_gc2375hw.bin /data/vendor/camera/golden_rear_dc_cal_wt_imx486_gc2375hw.bin
-chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_imx486_gc2375hw.bin
-chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_imx486_gc2375hw.bin
+    copy /vendor/etc/camera/golden_rear_dc_cal_wt_imx486_gc2375hw.bin /data/vendor/camera/golden_rear_dc_cal_wt_imx486_gc2375hw.bin
+    chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_imx486_gc2375hw.bin
+    chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_imx486_gc2375hw.bin
 
-copy /vendor/etc/camera/golden_rear_dc_cal_wt_imx486_ov02a10.bin /data/vendor/camera/golden_rear_dc_cal_wt_imx486_ov02a10.bin
-chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_imx486_ov02a10.bin
-chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_imx486_ov02a10.bin
+    copy /vendor/etc/camera/golden_rear_dc_cal_wt_imx486_ov02a10.bin /data/vendor/camera/golden_rear_dc_cal_wt_imx486_ov02a10.bin
+    chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_imx486_ov02a10.bin
+    chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_imx486_ov02a10.bin
 
-copy /vendor/etc/camera/golden_rear_dc_cal_wt_s5k2l7_gc2375hw.bin /data/vendor/camera/golden_rear_dc_cal_wt_s5k2l7_gc2375hw.bin
-chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_s5k2l7_gc2375hw.bin
-chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_s5k2l7_gc2375hw.bin
+    copy /vendor/etc/camera/golden_rear_dc_cal_wt_s5k2l7_gc2375hw.bin /data/vendor/camera/golden_rear_dc_cal_wt_s5k2l7_gc2375hw.bin
+    chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_s5k2l7_gc2375hw.bin
+    chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_s5k2l7_gc2375hw.bin
 
-copy /vendor/etc/camera/golden_rear_dc_cal_wt_ov13b10_ov02a10.bin /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_ov02a10.bin
-chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_ov02a10.bin
-chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_ov02a10.bin
+    copy /vendor/etc/camera/golden_rear_dc_cal_wt_ov13b10_ov02a10.bin /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_ov02a10.bin
+    chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_ov02a10.bin
+    chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_ov02a10.bin
 
-copy /vendor/etc/camera/golden_rear_dc_cal_wt_ov13b10_gc2375hw.bin /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_gc2375hw.bin
-chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_gc2375hw.bin
-chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_gc2375hw.bin
+    copy /vendor/etc/camera/golden_rear_dc_cal_wt_ov13b10_gc2375hw.bin /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_gc2375hw.bin
+    chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_gc2375hw.bin
+    chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_gc2375hw.bin
+
+    copy /vendor/etc/camera/golden_rear_dc_cal_wt_ov13b10_gc02m1hw.bin /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_gc02m1hw.bin
+    chown cameraserver audio  /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_gc02m1hw.bin
+    chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt_ov13b10_gc02m1hw.bin
 
