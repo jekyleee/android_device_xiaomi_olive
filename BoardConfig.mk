@@ -201,6 +201,7 @@ TARGET_KERNEL_SOURCE := kernel/xiaomi/olive
 TARGET_KERNEL_CONFIG := olive-perf_defconfig
 TARGET_KERNEL_CLANG_COMPILE := true
 #TARGET_PREBUILT_KERNEL:= device/xiaomi/olive/kernel
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 
 
 # OTA
